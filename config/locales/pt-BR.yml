@@ -1,0 +1,8 @@
+pt-BR:
+  other_address: "Novo endereço"
+  
+  activerecord:
+    attributes:
+      address:
+        firstname: 'Nome'
+        lastname: 'Sobrenome'

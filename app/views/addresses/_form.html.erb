@@ -1,0 +1,49 @@
+<% ADDRESS_FIELDS.each do |field| %>
+  <p id="<%= [address_name, field].join('_') %>" class="field">
+    <% if field == "country" %>
+      <%= address_form.label :country_id, t(field, :scope => [:activerecord, :attributes, :address]) %>
+      <span><%= address_form.collection_select :country_id, available_countries, :id, :name, {}, {:class => 'required'} %></span>
+      <span class="req">*</span>
+    <% elsif field == "state" && Spree::Config[:address_requires_state] %>
+      <%= address_form.label :state_id, t(field, :scope => [:activerecord, :attributes, :address]) %>
+      
+			<% country_fix = Country.find(28) %>
+			
+			<span id="state">
+        <% have_states = !country_fix.states.empty? %>
+        <noscript>
+          <%= address_form.text_field :state_name, :class => 'required' %>
+        </noscript>
+        <% state_elements = [
+           address_form.collection_select(:state_id, country_fix.states,
+                              :id, :name,
+                              {:include_blank => true},
+                              {:class => have_states ? "required" : "hidden",
+                              :disabled => !have_states}) +
+            address_form.text_field(:state_name,
+                              :class => !have_states ? "required" : "hidden",
+                              :disabled => have_states)
+            ].join.gsub('"', "'").gsub("\n", "")
+        %>
+        <script type="text/javascript" language="javascript" charset="utf-8">
+        // <![CDATA[
+        document.write("<%= raw state_elements %>");
+        // ]]>
+        </script>
+      </span>
+      <span class="req">*</span>
+    <% elsif field == "address2" %>
+      <%= address_form.label field, t(field, :scope => [:activerecord, :attributes, :address]) %>
+      <%= address_form.text_field field %>
+    <% else %>
+      <%= address_form.label field, t(field, :scope => [:activerecord, :attributes, :address]) %>
+      <%= address_form.text_field field, :class => 'required' %><span class="req">*</span>
+    <% end %>
+  </p>
+<% end %>
+<% if Spree::Config["alternative_#{address_name}_phone"] %>
+  <p id="altphone">
+    <%= address_form.label :alternative_phone, t(:alternative_phone) %>
+    <%= address_form.text_field :alternative_phone %>
+  </p>
+<% end %>
