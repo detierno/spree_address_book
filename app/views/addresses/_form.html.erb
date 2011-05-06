@@ -7,7 +7,7 @@
     <% elsif field == "state" && Spree::Config[:address_requires_state] %>
       <%= address_form.label :state_id, t(field, :scope => [:activerecord, :attributes, :address]) %>
       
-			<% country_fix = Country.find(28) %>
+			<% country_fix = Country.find_by_numcode(76) %>
 			
 			<span id="state">
         <% have_states = !country_fix.states.empty? %>
