@@ -11,7 +11,7 @@ Address.class_eval do
   end
   
   def to_s
-    "<p class=\"address_name\">{firstname} #{lastname}<p> <p>#{address1} #{address2}</p> <p>#{city} - #{state || state_name}</p> <p>CEP: #{zipcode}, #{country}</p>"
+    "<p class=\"address_name\">#{firstname} #{lastname}<p> <p>#{address1} #{address2}</p> <p>#{city} - #{state || state_name}</p> <p>CEP: #{zipcode}, #{country}</p>".html_safe
   end
   
   def destroy_with_saving_used
